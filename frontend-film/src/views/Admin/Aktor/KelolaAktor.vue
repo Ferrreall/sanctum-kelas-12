@@ -3,30 +3,35 @@
     <div class="page-title">
       <RouterLink to="/dashboard" class="btn-back">← Dashboard</RouterLink>
       <div class="title-row">
-        <h1>🎭 Kelola Genre</h1>
-        <RouterLink to="/tambah-genre" class="btn btn-primary">➕ Tambah Genre</RouterLink>
+        <h1>🌟 Kelola Aktor</h1>
+        <RouterLink to="/tambah-aktor" class="btn btn-primary">➕ Tambah Aktor</RouterLink>
       </div>
     </div>
 
     <div v-if="successMsg" class="alert alert-success">✅ {{ successMsg }}</div>
-    <p v-if="loading" class="loading-text">⏳ Memuat data genre...</p>
+    <p v-if="loading" class="loading-text">⏳ Memuat data aktor...</p>
 
     <div v-else class="table-wrapper">
       <table class="film-table">
-        <thead><tr><th>No</th><th>Nama Genre</th><th>Aksi</th></tr></thead>
+        <thead>
+          <tr><th>No</th><th>Nama Aktor</th><th>Gender</th><th>Tgl Lahir</th><th>Aksi</th></tr>
+        </thead>
         <tbody>
-          <tr v-if="genres.length === 0">
-            <td colspan="3" class="empty-row">Belum ada data genre.</td>
+          <tr v-if="aktors.length === 0">
+            <td colspan="5" class="empty-row">Belum ada data aktor.</td>
           </tr>
-          <tr v-for="(genre, index) in genres" :key="genre.id">
+          <tr v-for="(aktor, index) in aktors" :key="aktor.id">
             <td>{{ index + 1 }}</td>
-            <td class="film-title-cell">{{ genre.nama_genre }}</td>
+            <td class="film-title-cell">{{ aktor.nama_aktor }}</td>
+            <!-- Tampilkan teks lengkap, bukan kode L/P -->
+            <td>{{ aktor.jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : 'Perempuan' }}</td>
+            <td>{{ aktor.tanggal_lahir }}</td>
             <td>
               <div class="action-btns">
-                <RouterLink :to="'/edit-genre/' + genre.id" class="btn-action btn-edit">✏️ Edit</RouterLink>
-                <button @click="hapusGenre(genre.id, genre.nama_genre)"
-                  :disabled="deletingId === genre.id" class="btn-action btn-delete">
-                  <span v-if="deletingId === genre.id">⏳</span>
+                <RouterLink :to="'/edit-aktor/' + aktor.id" class="btn-action btn-edit">✏️ Edit</RouterLink>
+                <button @click="hapusAktor(aktor.id, aktor.nama_aktor)"
+                  :disabled="deletingId === aktor.id" class="btn-action btn-delete">
+                  <span v-if="deletingId === aktor.id">⏳</span>
                   <span v-else>🗑️ Hapus</span>
                 </button>
               </div>
@@ -36,11 +41,10 @@
       </table>
     </div>
 
-    <!-- Modal Hapus -->
     <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
       <div class="modal-box">
         <h3>⚠️ Konfirmasi Hapus</h3>
-        <p>Yakin menghapus genre: <strong>{{ genreToDelete?.nama_genre }}</strong>?</p>
+        <p>Yakin menghapus aktor: <strong>{{ aktorToDelete?.nama_aktor }}</strong>?</p>
         <p class="modal-warning">Tindakan ini tidak bisa dibatalkan!</p>
         <div class="modal-actions">
           <button @click="showModal = false" class="btn-modal-cancel">Batal</button>
@@ -56,56 +60,52 @@ import { ref, onMounted }        from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import api                       from '../../../utils/api'
 
-const router        = useRouter()
-const genres        = ref([])
-const loading       = ref(true)
-const successMsg    = ref('')
-const deletingId    = ref(null)
-const showModal     = ref(false)
-const genreToDelete = ref(null)
+const router       = useRouter()
+const aktors       = ref([])
+const loading      = ref(true)
+const successMsg   = ref('')
+const deletingId   = ref(null)
+const showModal    = ref(false)
+const aktorToDelete = ref(null)
 
-onMounted(async () => { await ambilGenre() })
+onMounted(async () => { await ambilAktor() })
 
-const ambilGenre = async () => {
+const ambilAktor = async () => {
   try {
     loading.value = true
-    const res = await api.get('/genre')
-    genres.value = res.data.data
+    const res = await api.get('/aktor')
+    aktors.value = res.data.data
   } catch (err) { console.error(err) }
   finally { loading.value = false }
 }
 
-const hapusGenre = (id, nama_genre) => {
-  genreToDelete.value = { id, nama_genre }
+const hapusAktor = (id, nama_aktor) => {
+  aktorToDelete.value = { id, nama_aktor }
   showModal.value     = true
 }
 
 const konfirmasiHapus = async () => {
-  const id = genreToDelete.value.id
+  const id = aktorToDelete.value.id
   showModal.value = false
   try {
     deletingId.value = id
-    await api.delete(`/genre/${id}`)
-    genres.value = genres.value.filter(g => g.id !== id)
-    successMsg.value = `Genre "${genreToDelete.value.nama_genre}" berhasil dihapus!`
+    await api.delete(`/aktor/${id}`)
+    aktors.value = aktors.value.filter(a => a.id !== id)
+    successMsg.value = `Aktor "${aktorToDelete.value.nama_aktor}" berhasil dihapus!`
     setTimeout(() => { successMsg.value = '' }, 3000)
-  } catch (err) {
-    alert('Gagal menghapus genre!')
-  } finally {
-    deletingId.value = null
-    genreToDelete.value = null
-  }
+  } catch (err) { alert('Gagal menghapus aktor!') }
+  finally { deletingId.value = null; aktorToDelete.value = null }
 }
 </script>
 
 <style scoped>
-/* Layout & Container Utama (Ke Tengah) */
+/* Layout & Container Utama */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 32px 16px;
   box-sizing: border-box;
@@ -173,7 +173,7 @@ const konfirmasiHapus = async () => {
 
 .loading-text {
   font-size: 16px;
-  color: #666;
+  color: #64748b;
   margin-top: 30px;
 }
 
@@ -222,7 +222,7 @@ const konfirmasiHapus = async () => {
   padding: 32px !important;
 }
 
-/* Action Buttons (Edit & Delete) */
+/* Action & Standard Buttons */
 .action-btns {
   display: flex;
   gap: 8px;
@@ -287,7 +287,7 @@ const konfirmasiHapus = async () => {
   cursor: not-allowed;
 }
 
-/* Modal Popup Confirmation */
+/* Modal Popup Konfirmasi */
 .modal-overlay {
   position: fixed;
   top: 0;

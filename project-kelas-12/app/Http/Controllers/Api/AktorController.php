@@ -42,7 +42,7 @@ class AktorController extends Controller
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                 'tanggal_lahir' => 'required|date',
                 'umur' => 'required|integer',
-                'foto' => 'nullable|image|max:2048'
+                'foto' => 'nullable|string'
             ]);
 
             $aktors = new Aktor();
@@ -89,7 +89,7 @@ class AktorController extends Controller
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                 'tanggal_lahir' => 'required|date',
                 'umur' => 'required|integer',
-                'foto' => 'nullable|image|max:2048'
+                'foto' => 'nullable|string'
             ]);
 
             $aktors->nama_aktor = $request->nama_aktor;

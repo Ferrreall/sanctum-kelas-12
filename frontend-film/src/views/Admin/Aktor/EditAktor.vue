@@ -1,16 +1,41 @@
 <template>
   <div class="container">
-    <RouterLink to="/kelola-genre" class="btn-back">← Kembali</RouterLink>
-    <h1>✏️ Edit Genre</h1>
+    <RouterLink to="/kelola-aktor" class="btn-back">← Kembali</RouterLink>
+    <h1 style="margin: 12px 0 24px">✏️ Edit Aktor</h1>
 
     <p v-if="loadingData" class="loading-text">⏳ Memuat data...</p>
 
     <div v-else class="form-wrapper">
-      <form @submit.prevent="submitGenre">
+      <form @submit.prevent="submitAktor">
         <div class="form-group">
-          <label>Nama Genre <span class="required">*</span></label>
-          <input v-model="form.nama_genre" type="text" required class="form-input" />
+          <label>Nama Aktor <span class="required">*</span></label>
+          <input v-model="form.nama_aktor" type="text" required class="form-input" />
         </div>
+
+        <div class="form-group">
+          <label>Gender <span class="required">*</span></label>
+          <select v-model="form.jenis_kelamin" required class="form-input">
+            <option value="" disabled>Pilih Gender</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tanggal Lahir <span class="required">*</span></label>
+          <input v-model="form.tanggal_lahir" type="date" required class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label>Umur (Tahun)</label>
+          <input v-model="form.umur" type="number" min="0" placeholder="Contoh: 58" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label>URL Foto Aktor</label>
+          <input v-model="form.foto" type="url" placeholder="https://..." class="form-input" />
+        </div>
+
         <button type="submit" :disabled="loading" class="btn-submit">
           <span v-if="loading">⏳ Menyimpan...</span>
           <span v-else>💾 Simpan Perubahan</span>
@@ -24,34 +49,49 @@
 <script setup>
 import { ref, onMounted }            from 'vue'
 import { useRouter, useRoute, RouterLink } from 'vue-router'
-import api                           from '../../../utils/api'
+import api                            from '../../../utils/api'
 
 const router  = useRouter()
 const route   = useRoute()
-const genreId = route.params.id
+const aktorId = route.params.id
 
-const form        = ref({ nama_genre: '' })
+const form        = ref({ 
+  nama_aktor: '', 
+  jenis_kelamin: '', 
+  tanggal_lahir: '',
+  umur: '',
+  foto: ''
+})
 const loadingData = ref(true)
 const loading     = ref(false)
 const errorMsg    = ref('')
 
 onMounted(async () => {
   try {
-    // Karena tidak ada GET /genre/:id, ambil semua lalu filter
-    const res     = await api.get('/genre')
-    const current = res.data.data.find(g => g.id == genreId)
-    if (current) { form.value.nama_genre = current.nama_genre }
-    else { router.push('/kelola-genre') }
-  } catch (err) { alert('Gagal memuat data') }
-  finally { loadingData.value = false }
+    const res     = await api.get('/aktor')
+    const current = res.data.data.find(a => a.id == aktorId)
+    if (current) {
+      form.value.nama_aktor    = current.nama_aktor || ''
+      form.value.jenis_kelamin = current.jenis_kelamin || ''
+      form.value.tanggal_lahir = current.tanggal_lahir || ''
+      form.value.umur          = current.umur || ''
+      form.value.foto          = current.foto || ''
+    } else { 
+      router.push('/kelola-aktor') 
+    }
+  } catch (err) { 
+    alert('Gagal memuat data') 
+  } finally { 
+    loadingData.value = false 
+  }
 })
 
-const submitGenre = async () => {
+const submitAktor = async () => {
   try {
     loading.value  = true
     errorMsg.value = ''
-    await api.put(`/genre/${genreId}`, form.value)
-    router.push('/kelola-genre')
+    await api.put(`/aktor/${aktorId}`, form.value)
+    router.push('/kelola-aktor')
   } catch (err) {
     errorMsg.value = err.response?.data?.message || 'Terjadi kesalahan.'
   } finally {
@@ -89,7 +129,6 @@ const submitGenre = async () => {
   border: 1px solid #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease-in-out;
-  margin-bottom: 20px;
 }
 
 .btn-back:hover {
@@ -105,7 +144,6 @@ h1 {
   font-size: 24px;
   font-weight: 700;
   color: #1a1a2e;
-  margin-bottom: 24px;
   text-align: left;
 }
 
@@ -129,7 +167,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-align: left;
 }
 
@@ -151,6 +189,7 @@ h1 {
   font-size: 14px;
   color: #1a1a2e;
   outline: none;
+  background-color: #fff;
   transition: all 0.2s;
   box-sizing: border-box;
 }
@@ -160,10 +199,15 @@ h1 {
   box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
 }
 
+select.form-input {
+  cursor: pointer;
+}
+
 /* Submit Button */
 .btn-submit {
   width: 100%;
   padding: 12px;
+  margin-top: 10px;
   background: #e94560;
   color: white;
   border: none;

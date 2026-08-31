@@ -14,6 +14,23 @@ import DetailFilm   from '../views/Public/DetailFilm.vue'
 // Halaman Autentikasi
 import LoginView    from '../views/Auth/LoginView.vue'
 
+// // Halaman Admin (harus login)
+import DashboardView from '../views/Admin/DashboardView.vue'
+
+// // Admin — Film
+import TambahFilm   from '../views/Admin/Film/TambahFilm.vue'
+import KelolaFilm   from '../views/Admin/Film/KelolaFilm.vue'
+import EditFilm     from '../views/Admin/Film/EditFilm.vue'
+
+// // Admin — Genre
+import KelolaGenre  from '../views/Admin/Genre/KelolaGenre.vue'
+import TambahGenre  from '../views/Admin/Genre/TambahGenre.vue'
+import EditGenre    from '../views/Admin/Genre/EditGenre.vue'
+
+// // Admin — Aktor
+import KelolaAktor  from '../views/Admin/Aktor/KelolaAktor.vue'
+import TambahAktor  from '../views/Admin/Aktor/TambahAktor.vue'
+import EditAktor    from '../views/Admin/Aktor/EditAktor.vue'
 
 // ─── Daftar semua route ────────────────────────────────────
 const routes = [
@@ -22,7 +39,23 @@ const routes = [
   { path: '/film/:id',   component: DetailFilm, name: 'detail-film' },
   { path: '/login',      component: LoginView,  name: 'login' },
 
-  
+  // Halaman admin (butuh login) — ditandai meta: { requiresAuth: true }
+  { path: '/dashboard',     component: DashboardView, name: 'dashboard',     meta: { requiresAuth: true } },
+
+  // // Film
+  { path: '/tambah-film',   component: TambahFilm,    name: 'tambah-film',   meta: { requiresAuth: true } },
+  { path: '/kelola-film',   component: KelolaFilm,    name: 'kelola-film',   meta: { requiresAuth: true } },
+  { path: '/edit-film/:id', component: EditFilm,      name: 'edit-film',     meta: { requiresAuth: true } },
+
+  // // Genre
+  { path: '/kelola-genre',     component: KelolaGenre, name: 'kelola-genre',    meta: { requiresAuth: true } },
+  { path: '/tambah-genre',     component: TambahGenre, name: 'tambah-genre',    meta: { requiresAuth: true } },
+  { path: '/edit-genre/:id',   component: EditGenre,   name: 'edit-genre',      meta: { requiresAuth: true } },
+
+  // // Aktor
+  { path: '/kelola-aktor',     component: KelolaAktor, name: 'kelola-aktor',    meta: { requiresAuth: true } },
+  { path: '/tambah-aktor',     component: TambahAktor, name: 'tambah-aktor',    meta: { requiresAuth: true } },
+  { path: '/edit-aktor/:id',   component: EditAktor,   name: 'edit-aktor',      meta: { requiresAuth: true } },
 ]
 
 // ─── Buat instance router ──────────────────────────────────
