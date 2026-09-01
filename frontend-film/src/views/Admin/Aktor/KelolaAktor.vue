@@ -20,6 +20,7 @@
             <th>Nama Aktor</th>
             <th>Gender</th>
             <th>Tgl Lahir</th>
+            <th>Umur</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -39,6 +40,7 @@
             <td class="film-title-cell">{{ aktor.nama_aktor }}</td>
             <td>{{ aktor.jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : 'Perempuan' }}</td>
             <td>{{ aktor.tanggal_lahir }}</td>
+            <td>{{ aktor.umur }}</td>
             <td>
               <div class="action-btns">
                 <RouterLink :to="'/edit-aktor/' + aktor.id" class="btn-action btn-edit">✏️ Edit</RouterLink>

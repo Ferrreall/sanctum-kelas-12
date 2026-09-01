@@ -31,10 +31,10 @@
           <input v-model="form.umur" type="number" min="0" placeholder="Contoh: 58" class="form-input" />
         </div>
 
-        <div class="form-group">
-          <label>URL Foto Aktor</label>
-          <input v-model="form.foto" type="url" placeholder="https://..." class="form-input" />
-        </div>
+          <div class="form-group">
+            <label>URL Foto Aktor</label>
+            <input v-model="form.foto" type="url" placeholder="https://..." class="form-input" />
+          </div>
 
         <button type="submit" :disabled="loading" class="btn-submit">
           <span v-if="loading">⏳ Menyimpan...</span>
