@@ -23,6 +23,7 @@ class PublicController extends Controller
                 'films.tanggal_rilis',
                 'films.durasi',
                 'films.sutradara',
+                'films.rating',
                 'genres.nama_genre'
             )
             ->orderBy('films.id', 'desc')
@@ -264,6 +265,7 @@ public function search(Request $request)
                 'films.poster',
                 'films.tanggal_rilis',
                 'films.durasi',
+                'films.rating',
                 'films.sutradara',
                 'genres.nama_genre'
             )

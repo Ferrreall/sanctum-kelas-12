@@ -50,14 +50,7 @@ class AktorController extends Controller
             $aktors->jenis_kelamin = $request->jenis_kelamin;
             $aktors->tanggal_lahir = $request->tanggal_lahir;
             $aktors->umur = $request->umur;
-
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/aktors'), $filename);
-                $aktors->foto = 'uploads/aktors/' . $filename;
-            }
-
+            $aktors->foto = $request->foto;
             $aktors->save();
 
             return response()->json([
@@ -96,17 +89,7 @@ class AktorController extends Controller
             $aktors->jenis_kelamin = $request->jenis_kelamin;
             $aktors->tanggal_lahir = $request->tanggal_lahir;
             $aktors->umur = $request->umur;
-
-            if ($request->hasFile('foto')) {
-                // Delete old photo if exists
-                if ($aktors->foto && file_exists(public_path($aktors->foto))) {
-                    unlink(public_path($aktors->foto));
-                }
-                $file = $request->file('foto');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/aktors'), $filename);
-                $aktors->foto = 'uploads/aktors/' . $filename;
-            }
+            $aktors->foto = $request->foto;
 
             $aktors->save();
 

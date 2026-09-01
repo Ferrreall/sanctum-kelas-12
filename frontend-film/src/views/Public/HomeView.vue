@@ -42,13 +42,14 @@
 
         <!-- Info film -->
         <div class="film-info">
-          <h3 class="film-title">{{ film.title }}</h3>
+          <h3 class="film-title">{{ film.judul }}</h3>
           <div class="film-meta">
             <span class="badge">{{ film.nama_genre }}</span>
             <span class="film-year">📅 {{ film.tanggal_rilis?.substring(0, 4) }}</span>
           </div>
           <p class="film-director">🎬 {{ film.sutradara }}</p>
           <p class="film-duration">⏱️ {{ film.durasi }} menit</p>
+          <p class="film-rating">⭐ {{ film.rating }}</p>
         </div>
       </div>
     </div>
@@ -146,6 +147,7 @@ onMounted(() => {
 .page-header { margin-bottom: 28px; }
 .page-header h1 { font-size: 32px; color: var(--color-dark); font-weight: 700; }
 .subtitle { color: #888; margin-top: 4px; }
+.film-rating { font-size: 13px; color: #555; margin-top: 4px; }
 
 /* Search Box */
 .search-box { margin-bottom: 28px; }

@@ -13,7 +13,13 @@
 
     <div v-else class="table-wrapper">
       <table class="film-table">
-        <thead><tr><th>No</th><th>Nama Genre</th><th>Aksi</th></tr></thead>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Genre</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
         <tbody>
           <tr v-if="genres.length === 0">
             <td colspan="3" class="empty-row">Belum ada data genre.</td>
@@ -24,8 +30,11 @@
             <td>
               <div class="action-btns">
                 <RouterLink :to="'/edit-genre/' + genre.id" class="btn-action btn-edit">✏️ Edit</RouterLink>
-                <button @click="hapusGenre(genre.id, genre.nama_genre)"
-                  :disabled="deletingId === genre.id" class="btn-action btn-delete">
+                <button 
+                  @click="hapusGenre(genre.id, genre.nama_genre)"
+                  :disabled="deletingId === genre.id" 
+                  class="btn-action btn-delete"
+                >
                   <span v-if="deletingId === genre.id">⏳</span>
                   <span v-else>🗑️ Hapus</span>
                 </button>
@@ -99,7 +108,7 @@ const konfirmasiHapus = async () => {
 </script>
 
 <style scoped>
-/* Layout & Container Utama (Ke Tengah) */
+/* Container Main Layout */
 .container {
   display: flex;
   flex-direction: column;
@@ -111,9 +120,13 @@ const konfirmasiHapus = async () => {
   box-sizing: border-box;
 }
 
-/* Page Header & Button Back */
+/* Page Header & Button Back Fix */
 .page-title {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 24px;
 }
 
@@ -131,7 +144,7 @@ const konfirmasiHapus = async () => {
   border: 1px solid #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease-in-out;
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .btn-back:hover {
@@ -169,11 +182,12 @@ const konfirmasiHapus = async () => {
 .alert-success {
   background: #d1fae5;
   color: #065f46;
+  border: 1px solid #a7f3d0;
 }
 
 .loading-text {
   font-size: 16px;
-  color: #666;
+  color: #64748b;
   margin-top: 30px;
 }
 
@@ -202,9 +216,14 @@ const konfirmasiHapus = async () => {
 
 .film-table td {
   padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f1f5f9;
   font-size: 14px;
-  color: #333;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.film-table tbody tr:hover {
+  background-color: #f8fafc;
 }
 
 .film-table tr:last-child td {
@@ -218,11 +237,11 @@ const konfirmasiHapus = async () => {
 
 .empty-row {
   text-align: center;
-  color: #888;
+  color: #94a3b8;
   padding: 32px !important;
 }
 
-/* Action Buttons (Edit & Delete) */
+/* Action Buttons */
 .action-btns {
   display: flex;
   gap: 8px;
@@ -239,12 +258,12 @@ const konfirmasiHapus = async () => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: all 0.2s ease;
 }
 
 .btn-primary {
   background: #e94560;
   color: white;
-  transition: background 0.2s;
 }
 
 .btn-primary:hover {
@@ -338,6 +357,11 @@ const konfirmasiHapus = async () => {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-modal-cancel:hover {
+  background: #e2e8f0;
 }
 
 .btn-modal-delete {
@@ -348,5 +372,10 @@ const konfirmasiHapus = async () => {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-modal-delete:hover {
+  background: #b91c1c;
 }
 </style>

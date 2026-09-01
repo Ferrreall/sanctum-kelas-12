@@ -179,7 +179,7 @@ const handleUpdate = async () => {
     await api.put(`/film/${filmId}`, form)
 
     successMsg.value = 'Data film berhasil diupdate!'
-    setTimeout(() => { router.push('/kelola-film') }, 2000)
+    router.push('/kelola-film') // <-- Redirect ke halaman kelola film setelah update sukses
     window.scrollTo({ top: 0, behavior: 'smooth' })
 
   } catch (err) {

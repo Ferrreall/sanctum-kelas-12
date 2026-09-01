@@ -50,7 +50,7 @@
       <div class="modal-box">
         <h3>⚠️ Konfirmasi Hapus</h3>
         <p>Yakin ingin menghapus film:</p>
-        <p class="modal-film-name">❝ {{ filmToDelete?.title }} ❞</p>
+        <p class="modal-film-name">❝ {{ filmToDelete?.judul }} ❞</p>
         <p class="modal-warning">Tindakan ini tidak bisa dibatalkan!</p>
         <div class="modal-actions">
           <button @click="showModal = false" class="btn-modal-cancel">Batal</button>
@@ -103,12 +103,12 @@ const konfirmasiHapus = async () => {
 
   try {
     deletingId.value = id
-    await api.delete(`/public/films/${id}`)
+    await api.delete(`film/${id}`)
 
     // Hapus dari array lokal (tampilan update tanpa reload)
     films.value = films.value.filter(film => film.id !== id)
 
-    successMsg.value = `Film "${filmToDelete.value.title}" berhasil dihapus!`
+    successMsg.value = `Film "${filmToDelete.value.judul}" berhasil dihapus!`
     setTimeout(() => { successMsg.value = '' }, 3000)
 
   } catch (err) {

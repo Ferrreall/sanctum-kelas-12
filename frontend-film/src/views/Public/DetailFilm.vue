@@ -34,6 +34,10 @@
             <span class="meta-label">📅 Tanggal Rilis</span>
             <span>{{ film.tanggal_rilis }}</span>
           </div>
+          <div class="meta-item">
+            <span class="meta-label">⭐ Rating</span>
+            <span>{{ film.rating }}</span>
+          </div>
         </div>
 
         <div class="deskripsi">

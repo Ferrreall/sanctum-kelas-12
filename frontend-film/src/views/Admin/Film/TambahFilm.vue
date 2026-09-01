@@ -149,6 +149,8 @@ const handleSubmit = async () => {
 
     successMsg.value = 'Film berhasil ditambahkan!'
 
+    router.push('/kelola-film')
+
     // Reset semua field form ke nilai awal
     Object.assign(form, {
       judul: '', genre_id: '', sutradara: '',
@@ -171,32 +173,274 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
+/* Container Main Layout */
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Memusatkan semua elemen di dalam container secara horizontal */
-  justify-content: center;
+  align-items: center;
   width: 100%;
-  min-height: 100vh; /* (Opsional) jika ingin tepat di tengah secara vertikal juga */
-  padding: 24px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  box-sizing: border-box;
 }
-.page-title { margin-bottom: 24px; }
-.page-title h1 { font-size: 28px; color: #1a1a2e; margin-top: 12px; }
-.btn-back { color: #666; font-size: 14px; }
-.btn-back:hover { color: #e94560; text-decoration: none; }
 
-.form-card { background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 20px; max-width: 720px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-label { font-size: 13px; font-weight: 600; color: #333; }
-.required { color: #e94560; margin-left: 2px; }
-input, select, textarea { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s; }
-input:focus, select:focus, textarea:focus { border-color: #e94560; box-shadow: 0 0 0 3px rgba(233,69,96,0.1); }
-.poster-preview { margin-top: 10px; width: 120px; height: 160px; object-fit: cover; border-radius: 8px; border: 2px solid #e0e0e0; }
-.checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.checkbox-item { display: flex; align-items: center; gap: 6px; background: #f4f4f8; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: normal; transition: background 0.2s; }
-.checkbox-item:has(input:checked) { background: #fee2e2; color: #e94560; font-weight: 600; }
-.hint { font-size: 12px; color: #999; margin-top: 4px; }
-.form-actions { display: flex; gap: 12px; justify-content: flex-end; padding-top: 8px; border-top: 1px solid #f0f0f0; }
-.btn-secondary { background: #f0f0f0; color: #555; padding: 10px 24px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; }
+/* Page Header */
+.page-title {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #ffffff;
+  color: #4a5568;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-back:hover {
+  background-color: #f8fafc;
+  color: #e94560;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transform: translateX(-3px);
+}
+
+h1 {
+  width: 100%;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: left;
+  margin: 12px 0 24px 0;
+}
+
+/* Alerts */
+.alert {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.alert-success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* Form Card Wrapper */
+.form-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+/* Grid 3 Kolom untuk Tanggal, Durasi, dan Rating */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.required {
+  color: #e94560;
+}
+
+/* Inputs, Selects, & Textarea */
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #1a1a2e;
+  outline: none;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #e94560;
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+select {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Poster Preview */
+.poster-preview {
+  margin-top: 8px;
+  width: 120px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Checkbox Grid Aktor */
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.checkbox-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.checkbox-item:has(input:checked) {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #e94560;
+  font-weight: 600;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  accent-color: #e94560;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* Form Action Buttons */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 8px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #e94560;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #d03750;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* Responsive Tablet/Mobile */
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-card {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn, .btn-secondary {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
 </style>

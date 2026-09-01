@@ -59,14 +59,8 @@ class FilmController extends Controller
             $film->tanggal_rilis = $request->tanggal_rilis;
             $film->genre_id = $request->genre_id;
             $film->sutradara = $request->sutradara;
+            $film->poster = $request->poster;
             $film->slug = Str::slug($request->judul) . '-' . Str::random(10);
-
-            if ($request->hasFile('poster')) {
-                $file = $request->file('poster');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/posters'), $filename);
-                $film->poster = 'uploads/posters/' . $filename;
-            }
 
             $film->save();
 
@@ -118,18 +112,8 @@ class FilmController extends Controller
             $film->tanggal_rilis = $request->tanggal_rilis;
             $film->genre_id = $request->genre_id;
             $film->sutradara = $request->sutradara;
+            $film->poster = $request->poster;
             $film->slug = Str::slug($request->judul) . '-' . Str::random(10);
-
-            if ($request->hasFile('poster')) {
-                // Delete old poster if exists
-                if ($film->poster && file_exists(public_path($film->poster))) {
-                    unlink(public_path($film->poster));
-                }
-                $file = $request->file('poster');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/posters'), $filename);
-                $film->poster = 'uploads/posters/' . $filename;
-            }
 
             $film->save();
 
